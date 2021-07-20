@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2021 at 04:53 AM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.1.33
+-- Waktu pembuatan: 20 Jul 2021 pada 15.10
+-- Versi server: 10.4.18-MariaDB
+-- Versi PHP: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `booking`
+-- Struktur dari tabel `booking`
 --
 
 CREATE TABLE `booking` (
@@ -34,27 +33,28 @@ CREATE TABLE `booking` (
   `username` varchar(50) NOT NULL,
   `tanggal` int(11) NOT NULL,
   `jumlah_peserta` int(4) NOT NULL DEFAULT 1,
-  `status` enum('Sedang diproses','Diterima') NOT NULL DEFAULT 'Sedang diproses',
-  `id_transaksi` varchar(50) DEFAULT NULL
+  `uang_muka` int(11) NOT NULL DEFAULT 0,
+  `bukti_pembayaran` text DEFAULT NULL,
+  `status` enum('Sedang diproses','Diterima') NOT NULL DEFAULT 'Sedang diproses'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `booking`
+-- Dumping data untuk tabel `booking`
 --
 
-INSERT INTO `booking` (`id`, `id_produk`, `username`, `tanggal`, `jumlah_peserta`, `status`, `id_transaksi`) VALUES
-(1624310445, 1, 'user1', 1624415445, 1, 'Diterima', NULL),
-(1624311181, 2, 'user2', 1624329121, 4, 'Sedang diproses', NULL),
-(1625742543, 13, 'novri', 1626019683, 1, 'Diterima', NULL),
-(1626027615, 9, 'user2', 1628205555, 1, 'Sedang diproses', NULL),
-(1626028840, 9, 'user2', 1628206840, 1, 'Diterima', NULL),
-(1626131856, 8, 'user2', 1627273056, 1, 'Diterima', NULL),
-(1626149406, 13, 'mega', 1627549806, 1, 'Diterima', NULL);
+INSERT INTO `booking` (`id`, `id_produk`, `username`, `tanggal`, `jumlah_peserta`, `uang_muka`, `bukti_pembayaran`, `status`) VALUES
+(1624310445, 1, 'user1', 1624415445, 1, 20000, 'files/pembayaran/bb_1626786288.png', 'Diterima'),
+(1624311181, 2, 'user2', 1624329121, 4, 0, NULL, 'Sedang diproses'),
+(1625742543, 13, 'novri', 1626019683, 1, 0, NULL, 'Diterima'),
+(1626027615, 9, 'user2', 1628205555, 1, 6000000, NULL, 'Sedang diproses'),
+(1626028840, 9, 'user2', 1628206840, 1, 0, NULL, 'Diterima'),
+(1626131856, 8, 'user2', 1627273056, 1, 0, NULL, 'Diterima'),
+(1626149406, 13, 'mega', 1627549806, 1, 0, NULL, 'Diterima');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gallery`
+-- Struktur dari tabel `gallery`
 --
 
 CREATE TABLE `gallery` (
@@ -65,7 +65,7 @@ CREATE TABLE `gallery` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `gallery`
+-- Dumping data untuk tabel `gallery`
 --
 
 INSERT INTO `gallery` (`id`, `judul`, `timestamps`, `gambar`) VALUES
@@ -86,7 +86,7 @@ INSERT INTO `gallery` (`id`, `judul`, `timestamps`, `gambar`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `gambar_produk`
+-- Struktur dari tabel `gambar_produk`
 --
 
 CREATE TABLE `gambar_produk` (
@@ -96,7 +96,7 @@ CREATE TABLE `gambar_produk` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `gambar_produk`
+-- Dumping data untuk tabel `gambar_produk`
 --
 
 INSERT INTO `gambar_produk` (`id`, `id_produk`, `gambar`) VALUES
@@ -216,7 +216,7 @@ INSERT INTO `gambar_produk` (`id`, `id_produk`, `gambar`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategori_produk`
+-- Struktur dari tabel `kategori_produk`
 --
 
 CREATE TABLE `kategori_produk` (
@@ -225,7 +225,7 @@ CREATE TABLE `kategori_produk` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `kategori_produk`
+-- Dumping data untuk tabel `kategori_produk`
 --
 
 INSERT INTO `kategori_produk` (`id`, `kategori`) VALUES
@@ -240,7 +240,7 @@ INSERT INTO `kategori_produk` (`id`, `kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `news`
+-- Struktur dari tabel `news`
 --
 
 CREATE TABLE `news` (
@@ -252,7 +252,7 @@ CREATE TABLE `news` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `news`
+-- Dumping data untuk tabel `news`
 --
 
 INSERT INTO `news` (`id`, `judul`, `konten`, `gambar`, `kategori`) VALUES
@@ -261,21 +261,7 @@ INSERT INTO `news` (`id`, `judul`, `konten`, `gambar`, `kategori`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pembayaran`
---
-
-CREATE TABLE `pembayaran` (
-  `id` varchar(50) NOT NULL,
-  `tanggal` int(11) NOT NULL,
-  `rekening` varchar(50) NOT NULL,
-  `nilai transfer` float NOT NULL,
-  `foto` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pengunjung`
+-- Struktur dari tabel `pengunjung`
 --
 
 CREATE TABLE `pengunjung` (
@@ -288,7 +274,7 @@ CREATE TABLE `pengunjung` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `pengunjung`
+-- Dumping data untuk tabel `pengunjung`
 --
 
 INSERT INTO `pengunjung` (`id`, `ip`, `useragent`, `tahun`, `bulan`, `timestamps`) VALUES
@@ -412,12 +398,16 @@ INSERT INTO `pengunjung` (`id`, `ip`, `useragent`, `tahun`, `bulan`, `timestamps
 (118, '::1', 'Windows 7, Chrome 91.0.4472.124', 2021, 7, 1626493172),
 (119, '::1', 'Windows 7, Chrome 91.0.4472.124', 2021, 7, 1626493850),
 (120, '::1', 'Windows 7, Chrome 91.0.4472.124', 2021, 7, 1626493850),
-(121, '::1', 'Windows 7, Chrome 91.0.4472.124', 2021, 7, 1626495178);
+(121, '::1', 'Windows 7, Chrome 91.0.4472.124', 2021, 7, 1626495178),
+(122, '::1', 'Windows 10, Chrome 91.0.4472.124', 2021, 7, 1626766842),
+(123, '::1', 'Windows 10, Chrome 91.0.4472.124', 2021, 7, 1626783108),
+(124, '::1', 'Windows 10, Chrome 91.0.4472.124', 2021, 7, 1626786298),
+(125, '::1', 'Windows 10, Chrome 91.0.4472.124', 2021, 7, 1626786612);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `perusahaan`
+-- Struktur dari tabel `perusahaan`
 --
 
 CREATE TABLE `perusahaan` (
@@ -426,7 +416,7 @@ CREATE TABLE `perusahaan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `perusahaan`
+-- Dumping data untuk tabel `perusahaan`
 --
 
 INSERT INTO `perusahaan` (`namafield`, `nilai`) VALUES
@@ -444,7 +434,7 @@ INSERT INTO `perusahaan` (`namafield`, `nilai`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produk`
+-- Struktur dari tabel `produk`
 --
 
 CREATE TABLE `produk` (
@@ -457,7 +447,7 @@ CREATE TABLE `produk` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `produk`
+-- Dumping data untuk tabel `produk`
 --
 
 INSERT INTO `produk` (`id`, `judul`, `kategori`, `harga`, `jumlah_orang`, `deskripsi`) VALUES
@@ -478,8 +468,8 @@ INSERT INTO `produk` (`id`, `judul`, `kategori`, `harga`, `jumlah_orang`, `deskr
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `produk_view`
--- (See below for the actual view)
+-- Stand-in struktur untuk tampilan `produk_view`
+-- (Lihat di bawah untuk tampilan aktual)
 --
 CREATE TABLE `produk_view` (
 `id` int(11)
@@ -494,7 +484,7 @@ CREATE TABLE `produk_view` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktur dari tabel `users`
 --
 
 CREATE TABLE `users` (
@@ -511,7 +501,7 @@ CREATE TABLE `users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `users`
+-- Dumping data untuk tabel `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `nama`, `tempatlahir`, `tanggallahir`, `jenis_kelamin`, `hp`, `alamat`, `level`) VALUES
@@ -524,114 +514,108 @@ INSERT INTO `users` (`id`, `username`, `password`, `nama`, `tempatlahir`, `tangg
 -- --------------------------------------------------------
 
 --
--- Structure for view `produk_view`
+-- Struktur untuk view `produk_view`
 --
 DROP TABLE IF EXISTS `produk_view`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `produk_view`  AS  (select `produk`.`id` AS `id`,`produk`.`judul` AS `judul`,`produk`.`kategori` AS `kategori`,`produk`.`harga` AS `harga`,`produk`.`jumlah_orang` AS `jumlah_orang`,`produk`.`deskripsi` AS `deskripsi`,`gambar_produk`.`gambar` AS `gambar` from (`produk` left join `gambar_produk` on(`produk`.`id` = `gambar_produk`.`id_produk`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `produk_view`  AS   (select `produk`.`id` AS `id`,`produk`.`judul` AS `judul`,`produk`.`kategori` AS `kategori`,`produk`.`harga` AS `harga`,`produk`.`jumlah_orang` AS `jumlah_orang`,`produk`.`deskripsi` AS `deskripsi`,`gambar_produk`.`gambar` AS `gambar` from (`produk` left join `gambar_produk` on(`produk`.`id` = `gambar_produk`.`id_produk`)))  ;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `booking`
+-- Indeks untuk tabel `booking`
 --
 ALTER TABLE `booking`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `gallery`
+-- Indeks untuk tabel `gallery`
 --
 ALTER TABLE `gallery`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `gambar_produk`
+-- Indeks untuk tabel `gambar_produk`
 --
 ALTER TABLE `gambar_produk`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `kategori_produk`
+-- Indeks untuk tabel `kategori_produk`
 --
 ALTER TABLE `kategori_produk`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `kategori` (`kategori`);
 
 --
--- Indexes for table `news`
+-- Indeks untuk tabel `news`
 --
 ALTER TABLE `news`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pembayaran`
---
-ALTER TABLE `pembayaran`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `pengunjung`
+-- Indeks untuk tabel `pengunjung`
 --
 ALTER TABLE `pengunjung`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `perusahaan`
+-- Indeks untuk tabel `perusahaan`
 --
 ALTER TABLE `perusahaan`
   ADD PRIMARY KEY (`namafield`);
 
 --
--- Indexes for table `produk`
+-- Indeks untuk tabel `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`username`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `gallery`
+-- AUTO_INCREMENT untuk tabel `gallery`
 --
 ALTER TABLE `gallery`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `gambar_produk`
+-- AUTO_INCREMENT untuk tabel `gambar_produk`
 --
 ALTER TABLE `gambar_produk`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=483;
 
 --
--- AUTO_INCREMENT for table `kategori_produk`
+-- AUTO_INCREMENT untuk tabel `kategori_produk`
 --
 ALTER TABLE `kategori_produk`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `news`
+-- AUTO_INCREMENT untuk tabel `news`
 --
 ALTER TABLE `news`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `pengunjung`
+-- AUTO_INCREMENT untuk tabel `pengunjung`
 --
 ALTER TABLE `pengunjung`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
--- AUTO_INCREMENT for table `produk`
+-- AUTO_INCREMENT untuk tabel `produk`
 --
 ALTER TABLE `produk`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
