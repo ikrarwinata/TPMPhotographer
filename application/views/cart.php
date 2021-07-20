@@ -10,7 +10,7 @@
 					<?php if (count($data_cart_belum_bayar) >= 1) : ?>
 						<div class="row">
 							<div class="col-lg-12 col-md-12 col-sm-12">
-								<h3><i class="fa fa-shopping-cart"></i>&nbsp;Belum Dibayar</h3>
+								<h3><i class="fa fa-shopping-cart"></i>&nbsp;Riwayat Pesanan</h3>
 							</div>
 						</div>
 

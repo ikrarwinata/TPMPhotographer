@@ -362,7 +362,7 @@ class Home extends CI_Controller {
 		$this->load->model("Booking_model");
 		$this->load->library('form_validation');
 
-		$belum_bayar = $this->Booking_model->db->select("produk.id AS id_produk, produk.judul, SUM(booking.uang_muka) AS DP, produk.harga, booking.id, booking.tanggal, booking.status, booking.bukti_pembayaran")->join("produk", "booking.id_produk=produk.id")->where("username", $this->session->userdata("username"))->group_by("booking.username")->get($this->Booking_model->table)->result();
+		$belum_bayar = $this->Booking_model->db->select("produk.id AS id_produk, produk.judul, SUM(booking.uang_muka) AS DP, produk.harga, booking.id, booking.tanggal, booking.status, booking.bukti_pembayaran")->join("produk", "booking.id_produk=produk.id")->where("username", $this->session->userdata("username"))->group_by("booking.id")->get($this->Booking_model->table)->result();
 		$data = array(
 			'data_cart_belum_bayar' => $belum_bayar,
 			'konten' => 'cart',
