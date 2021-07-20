@@ -29,7 +29,7 @@ class Booking extends CI_Controller
         $config['page_query_string'] = TRUE;
         $this->Booking_model->db->join("users", "booking.username=users.username")->join("produk", "produk.id = booking.id_produk");
         $config['total_rows'] = $this->Booking_model->total_rows($q);
-        $this->Booking_model->db->select("booking.*, produk.judul, users.nama, users.id AS nik, users.hp")->join("users", "booking.username=users.username")->join("produk", "produk.id = booking.id_produk");
+        $this->Booking_model->db->select("booking.*, produk.judul, SUM(booking.uang_muka) AS DP, SUM(produk.harga) AS harga, users.nama, users.id AS nik, users.hp")->join("users", "booking.username=users.username")->join("produk", "produk.id = booking.id_produk")->group_by("booking.id");
         $booking = $this->Booking_model->get_limit_data($config['per_page'], $start, $q);
 
         $this->load->library('pagination');
@@ -48,6 +48,7 @@ class Booking extends CI_Controller
 
     public function read($id) 
     {
+        $this->Booking_model->db->select("booking.*, produk.judul, SUM(booking.uang_muka) AS DP, users.nama, users.id AS nik, users.hp")->join("users", "booking.username=users.username")->join("produk", "produk.id = booking.id_produk");
         $row = $this->Booking_model->get_by_id($id);
         if ($row) {
             $data = array(
@@ -55,7 +56,9 @@ class Booking extends CI_Controller
             'id_produk' => $row->id_produk,
             'username' => $row->username,
             'tanggal' => $row->tanggal,
-            'id_transaksi' => $row->id_transaksi,
+            'id_transaksi' => $row->id,
+            'DP' => $row->DP,
+            'bukti_pembayaran' => ($row->bukti_pembayaran!=NULL? $row->bukti_pembayaran:NULL),
             'konten' => 'admin/booking/booking_read'
         );
         $this->load->view('admin/container', $data);
@@ -79,6 +82,21 @@ class Booking extends CI_Controller
         if ($row) {
             $this->Booking_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+            redirect(site_url('admin/Booking'));
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('admin/Booking'));
+        }
+    }
+
+    public function lunas($id)
+    {
+        $this->Booking_model->db->select("booking.*, produk.harga, users.nama, users.id AS nik, users.hp")->join("users", "booking.username=users.username")->join("produk", "produk.id = booking.id_produk");
+        $row = $this->Booking_model->get_by_id($id);
+
+        if ($row) {
+            $h = $row->harga;
+            $this->db->query("UPDATE booking SET uang_muka = '" . $h . "' WHERE id = '" . $row->id . "'");
             redirect(site_url('admin/Booking'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -112,10 +130,11 @@ class Booking extends CI_Controller
         xlsWriteLabel($tablehead, $kolomhead++, "Username");
         xlsWriteLabel($tablehead, $kolomhead++, "Nama Pelanggan");
         xlsWriteLabel($tablehead, $kolomhead++, "HP");
+        xlsWriteLabel($tablehead, $kolomhead++, "Terbayar");
         xlsWriteLabel($tablehead, $kolomhead++, "Tanggal");
         xlsWriteLabel($tablehead, $kolomhead++, "Jumlah Peserta");
 
-        $this->Booking_model->db->select("booking.*, produk.judul, users.nama, users.id AS nik, users.hp")->join("users", "booking.username=users.username")->join("produk", "produk.id = booking.id_produk");
+        $this->Booking_model->db->select("booking.*, produk.judul, SUM(booking.uang_muka) AS DP, users.nama, users.id AS nik, users.hp")->join("users", "booking.username=users.username")->join("produk", "produk.id = booking.id_produk")->group_by("booking.id");
 	    foreach ($this->Booking_model->get_all() as $data) {
             $kolombody = 0;
 
@@ -125,6 +144,7 @@ class Booking extends CI_Controller
             xlsWriteLabel($tablebody, $kolombody++, $data->username);
             xlsWriteLabel($tablebody, $kolombody++, $data->nama);
             xlsWriteLabel($tablebody, $kolombody++, $data->hp);
+            xlsWriteLabel($tablebody, $kolombody++, (isset($data->DP)? format_number($data->DP):0));
             xlsWriteLabel($tablebody, $kolombody++, date("d M Y H:i", $data->tanggal));
             xlsWriteLabel($tablebody, $kolombody++, $data->jumlah_peserta);
 

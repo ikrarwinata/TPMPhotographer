@@ -62,23 +62,23 @@ Author URL: http://w3layouts.com
   $wa = NULL;
   $wa1 = $this->db->where('namafield', 'whatsapp1')->get('perusahaan')->row();
   $wa2 = $this->db->where('namafield', 'whatsapp2')->get('perusahaan')->row();
-  if(isset($wa2->nilai) && $wa2->nilai != NULL){
+  if (isset($wa2->nilai) && $wa2->nilai != NULL) {
     $wa = $wa2->nilai;
-  }else if(isset($wa1->nilai) && $wa1->nilai != NULL) {
+  } else if (isset($wa1->nilai) && $wa1->nilai != NULL) {
     $wa = $wa1->nilai;
   }
-  if($wa!=NULL):
-    if(substr($wa,0,1)=="0"){
+  if ($wa != NULL) :
+    if (substr($wa, 0, 1) == "0") {
       $wa = "62" . substr($wa, 1);
-    }else if(substr($wa, 0, 1) == "+") {
+    } else if (substr($wa, 0, 1) == "+") {
       $wa = substr($wa, 1);
     };
     $wa = str_replace(" ", "", $wa);
     $wa = str_replace("-", "", $wa);
   ?>
-  <a class="float" href="https://api.whatsapp.com/send?phone=<?php echo ($wa) ?>&text=<?php echo (urlencode('Hai TPM Photography, apakah saya bisa melakukan booking ?')) ?>&source=&data=">
-    <i class="my-float"></i>
-  </a>
+    <a class="float" href="https://api.whatsapp.com/send?phone=<?php echo ($wa) ?>&text=<?php echo (urlencode('Hai TPM Photography, apakah saya bisa melakukan booking ?')) ?>&source=&data=">
+      <i class="my-float"></i>
+    </a>
   <?php endif; ?>
   <!-- //w3l-banner-slider-main -->
 
@@ -205,7 +205,12 @@ Author URL: http://w3layouts.com
   $(function() {
     $('.navbar-toggler').click(function() {
       $('body').toggleClass('noscroll');
-    })
+    });
+
+    $(".btn-bayar").click(function() {
+      var t = $(this).closest("tr");
+      $("#" + t.attr("data-id")).toggleClass("d-none");
+    });
   });
 </script>
 <!-- disable body scroll which navbar is in active -->

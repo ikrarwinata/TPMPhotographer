@@ -16,4 +16,14 @@
         <td>Id Transaksi</td>
         <td><?php echo $id_transaksi; ?></td>
     </tr>
+    <tr>
+        <td>Uang Muka</td>
+        <td>Rp. <?php echo format_number($DP); ?></td>
+    </tr>
+    <tr>
+        <td>Bukti Pembayaran</td>
+        <td>
+            <a href="<?php echo (base_url($bukti_pembayaran)) ?>"><img src="<?php echo (base_url($bukti_pembayaran)) ?>" alt="" style="max-width: 350px;"> </a>
+        </td>
+    </tr>
 </table>

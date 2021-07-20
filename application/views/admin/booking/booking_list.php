@@ -34,6 +34,7 @@
                 <th class="text-center">#</th>
                 <th>Id Produk</th>
                 <th>Pelanggan</th>
+                <th>Terbayar</th>
                 <th>Tanggal</th>
                 <th>HP</th>
                 <th></th>
@@ -47,16 +48,20 @@
                     <td width="40px" class="text-center"><?php echo ++$start ?></td>
                     <td><a href="admin/Produk/read/<?php echo ($booking->id_produk) ?>" class="btn btn-sm btn-success"><?php echo $booking->judul ?></a></td>
                     <td><a href="admin/Users/read/<?php echo ($booking->nik) ?>" class="btn btn-sm btn-success"><?php echo $booking->nama ?></a></td>
-                    <td><?php echo date("d M Y H:i", $booking->tanggal) ?></td>
+                    <td>Rp. <?php echo format_number($booking->DP) ?></td>
+                    <td><?php echo date("d M Y", $booking->tanggal) . "<br>" . date("H:i", $booking->tanggal) ?></td>
                     <td><?php echo $booking->hp ?></td>
                     <td class="text-center">
                         <?php if ($booking->status == "Sedang diproses") : ?>
-                            <a href="admin/Booking/accept/<?php echo ($booking->id) ?>" class="btn btn-sm btn-warning" title="Belum dikonfirmasi" onclick="return confirm('Anda yakin akan menerima pesanan ini ?')"><i class="fa fa-minus"></i></a>
+                            <a href="admin/Booking/accept/<?php echo ($booking->id) ?>" class="btn btn-sm btn-warning" title="Belum dikonfirmasi" onclick="return confirm('Anda yakin akan menerima pesanan ini ?')"><i class="fa fa-circle"></i></a>
                         <?php else : ?>
                             <button type="button" class="btn btn-sm btn-primary" title="Telah dikonfirmasi"><i class="fa fa-check"></i></button>
                         <?php endif; ?>
                     </td>
-                    <td style="text-align:center" width="100px">
+                    <td style="text-align:center" width="150px">
+                        <?php if ($booking->uang_muka < $booking->harga) : ?>
+                            <a href="admin/Booking/lunas/<?php echo ($booking->id) ?>" class="btn btn-sm btn-primary" onclick="return confirm('Anda yakin ingin melunasi transaksi ini ?')"><i class="fa fa-dollar"></i></a>
+                        <?php endif; ?>
                         <a href="admin/Booking/read/<?php echo ($booking->id) ?>" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
                         <a href="admin/Booking/delete/<?php echo ($booking->id) ?>" class="btn btn-sm btn-danger" onclick="javasciprt: return confirm('Anda yakin ingin menghapus data ini ?')"><i class="fa fa-trash"></i></a>
                     </td>

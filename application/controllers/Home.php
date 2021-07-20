@@ -360,16 +360,41 @@ class Home extends CI_Controller {
 	{
 		$this->load->helper("default_helper");
 		$this->load->model("Booking_model");
+		$this->load->library('form_validation');
 
-		$belum_bayar = $this->Booking_model->db->select("produk.id AS id_produk, produk.judul, produk.harga, booking.id, booking.tanggal, booking.status")->join("produk", "booking.id_produk=produk.id")->where("username", $this->session->userdata("username"))->where("id_transaksi IS NULL")->get($this->Booking_model->table)->result();
-		$terbayar = $this->Booking_model->db->select("produk.id AS id_produk, produk.judul, produk.harga, booking.id, booking.tanggal, booking.status")->join("produk", "booking.id_produk=produk.id")->join("pembayaran", "booking.id_transaksi = pembayaran.id")->where("username", $this->session->userdata("username"))->get($this->Booking_model->table)->result();
+		$belum_bayar = $this->Booking_model->db->select("produk.id AS id_produk, produk.judul, SUM(booking.uang_muka) AS DP, produk.harga, booking.id, booking.tanggal, booking.status, booking.bukti_pembayaran")->join("produk", "booking.id_produk=produk.id")->where("username", $this->session->userdata("username"))->group_by("booking.username")->get($this->Booking_model->table)->result();
 		$data = array(
-			'data_cart_terbayar' => $terbayar,
 			'data_cart_belum_bayar' => $belum_bayar,
 			'konten' => 'cart',
 			'judul' => "Keranjang Saya",
 		);
 		$this->load->view('container', $data);
+	}
+
+	public function bayar($id){
+		$id = urldecode($id);
+		$n = $this->input->post("n");
+		$config['upload_path']          = 'files/pembayaran/';
+		$config['allowed_types']        = 'gif|jpg|png|jpeg';
+		$config['max_size']             = 10000;
+		$config['max_width']            = 13660;
+		$config['max_height']           = 7680;
+
+		$this->load->library('upload', $config);
+
+		$data = array(
+			'uang_muka' => $n
+		);
+		if ($this->upload->do_upload('b')) {
+			$udata = $this->upload->data();
+			$foto1 = $config["upload_path"] . "bb_" . strtotime("now") . $udata["file_ext"];
+			rename($udata["full_path"], $foto1);
+			$data["bukti_pembayaran"] = $foto1;
+		}
+
+		$this->load->model("Booking_model");
+		$this->Booking_model->update($id, $data);
+		redirect("Home/cart");
 	}
 
 	public function cart_remove($id)

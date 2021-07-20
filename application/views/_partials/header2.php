@@ -20,7 +20,7 @@
 									</a>
 								</li>
 							<?php elseif ($this->session->userdata("level") == "user") : ?>
-								<?php $t = $this->db->where("username", $this->session->userdata("username"))->where("id_transaksi IS NULL", NULL, FALSE)->from("booking")->count_all_results(); ?>
+								<?php $t = $this->db->where("username", $this->session->userdata("username"))->where("bukti_pembayaran IS NULL", NULL, FALSE)->from("booking")->count_all_results(); ?>
 								<li class="">
 									<a class="btn-open" href="Home/cart">
 										<span class="fa fa-shopping-cart" aria-hidden="true"></span>

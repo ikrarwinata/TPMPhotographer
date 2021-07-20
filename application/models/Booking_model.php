@@ -45,7 +45,7 @@ class Booking_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
-        $this->db->where($this->id, $id);
+        $this->db->where($this->table.".".$this->id, $id);
         return $this->db->get($this->table)->row();
     }
     
@@ -55,7 +55,6 @@ class Booking_model extends CI_Model
 	$this->db->or_like('id_produk', $q);
 	$this->db->or_like('booking.username', $q);
 	$this->db->or_like('tanggal', $q);
-	$this->db->or_like('id_transaksi', $q);
 	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
@@ -67,7 +66,6 @@ class Booking_model extends CI_Model
 	$this->db->or_like('id_produk', $q);
 	$this->db->or_like('booking.username', $q);
 	$this->db->or_like('tanggal', $q);
-	$this->db->or_like('id_transaksi', $q);
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
