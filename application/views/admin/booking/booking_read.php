@@ -1,6 +1,10 @@
 <h2 style="margin-top:0px">Detail Pesanan</h2>
 <table class="table">
     <tr>
+        <td>Id Transaksi</td>
+        <td><?php echo $id_transaksi; ?></td>
+    </tr>
+    <tr>
         <td>Username</td>
         <td><?php echo $username; ?></td>
     </tr>
@@ -10,11 +14,7 @@
     </tr>
     <tr>
         <td>Tanggal</td>
-        <td><?php echo $tanggal; ?></td>
-    </tr>
-    <tr>
-        <td>Id Transaksi</td>
-        <td><?php echo $id_transaksi; ?></td>
+        <td><?php echo date("d M Y H:i:s", $tanggal); ?></td>
     </tr>
     <tr>
         <td>Uang Muka</td>

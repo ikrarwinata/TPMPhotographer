@@ -379,7 +379,7 @@
                         titleFontSize: 12,
                         titleFontColor: '#000',
                         bodyFontColor: '#000',
-                        backgroundColor: '#ffff',
+                        backgroundColor: '#fff',
                         titleFontFamily: 'Montserrat',
                         bodyFontFamily: 'Montserrat',
                         cornerRadius: 3,
